@@ -323,7 +323,56 @@
   }
 </style>
 </head>
-<body>
+<body style="overflow:hidden;">
+
+<!-- INTRO SCREEN -->
+<div id="intro-screen" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#0f172a 0%,#1a2744 50%,#1e3a5f 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(37,99,235,0.2) 0%,transparent 55%),radial-gradient(ellipse at 75% 70%,rgba(99,102,241,0.15) 0%,transparent 50%);pointer-events:none;"></div>
+
+  <div style="position:relative;max-width:500px;width:100%;">
+    <div style="display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:7px 20px;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:28px;">
+      📦 Производство — Контроль качества
+    </div>
+
+    <h1 style="font-size:clamp(28px,6vw,48px);font-weight:800;color:white;line-height:1.15;margin-bottom:18px;">
+      Добро пожаловать<br><span style="color:#60a5fa;">в обучение</span>
+    </h1>
+
+    <p style="font-size:15px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:12px;">
+      Здесь ты узнаешь всё необходимое для работы на участке проверки автомобильных сидушек на брак.
+    </p>
+    <p style="font-size:15px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:36px;">
+      Читай внимательно — после этого у тебя будет полное понимание того, что нужно делать. Если останутся вопросы, контакт руководителя есть в конце страницы.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:36px;">
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 10px;">
+        <div style="font-size:22px;margin-bottom:6px;">📋</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;">Паспорт товара</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 10px;">
+        <div style="font-size:22px;margin-bottom:6px;">🔍</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;">Виды дефектов</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 10px;">
+        <div style="font-size:22px;margin-bottom:6px;">🧮</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;">Расчёт брака</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 10px;">
+        <div style="font-size:22px;margin-bottom:6px;">❓</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;">Частые вопросы</div>
+      </div>
+    </div>
+
+    <button onclick="document.getElementById('intro-screen').style.display='none';document.body.style.overflow='auto';"
+      style="background:var(--blue,#2563eb);color:white;border:none;border-radius:12px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.02em;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 4px 24px rgba(37,99,235,0.5);"
+      onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+      Начать обучение →
+    </button>
+  </div>
+</div>
+
+
 
 <!-- HERO -->
 <div class="hero">
@@ -513,6 +562,11 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="alert important" style="margin-top:20px;">
+      <span class="icon">⚠️</span>
+      <div><strong>Не путайте коды товаров!</strong> У каждого изделия Part code может отличаться. Записывайте в одну строку только те товары, у которых одинаковый Part code. Если Part code разный — это разные позиции, каждая идёт отдельной строкой в таблице.</div>
     </div>
   </div>
 </section>
