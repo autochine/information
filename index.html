@@ -528,19 +528,37 @@
       <small>Делим количество бракованных на общее количество и умножаем на 100</small>
     </div>
 
-    <div class="examples-grid">
-      <div class="example-pill ok">
-        <strong>15 : 15 : 0 → 0%</strong>
-        Весь товар хороший
-      </div>
-      <div class="example-pill warn">
-        <strong>15 : 10 : 5 → 33,3%</strong>
-        Брак 33,33%
-      </div>
-      <div class="example-pill bad">
-        <strong>15 : 5 : 10 → 66,7%</strong>
-        Брак 66,67%
-      </div>
+    <div class="table-wrap" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:center;">Всего товара</th>
+            <th style="text-align:center;">Хорошего товара</th>
+            <th style="text-align:center;">Плохого товара<br><span style="font-weight:400;font-size:11px;opacity:0.8;">(исправлено или «не подлежит восстановлению»)</span></th>
+            <th style="text-align:center;">% брака (итог)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:center;font-weight:600;">15</td>
+            <td style="text-align:center;font-weight:600;">15</td>
+            <td style="text-align:center;font-weight:600;">0</td>
+            <td style="text-align:center;font-weight:800;color:var(--green);">0% ✅</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-weight:600;">15</td>
+            <td style="text-align:center;font-weight:600;">10</td>
+            <td style="text-align:center;font-weight:600;">5</td>
+            <td style="text-align:center;font-weight:800;color:var(--orange);">33,33% ⚠️</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-weight:600;">15</td>
+            <td style="text-align:center;font-weight:600;">5</td>
+            <td style="text-align:center;font-weight:600;">10</td>
+            <td style="text-align:center;font-weight:800;color:var(--red);">66,67% 🚨</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <!-- CALCULATOR -->
     <div style="margin-top:32px;background:white;border:2px solid var(--blue);border-radius:16px;padding:24px;">
