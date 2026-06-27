@@ -321,6 +321,71 @@
     .defects-grid { grid-template-columns: 1fr; }
     .examples-grid { grid-template-columns: 1fr 1fr; }
   }
+
+  /* ACCORDION */
+  .main-content { max-width: 860px; margin: 0 auto; padding: 24px 20px 48px; display: flex; flex-direction: column; gap: 12px; }
+
+  .acc-block {
+    background: white;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .acc-block.open { box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-color: var(--blue); }
+
+  .acc-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .acc-header:hover { background: var(--gray-50); }
+  .acc-block.open .acc-header { background: var(--gray-50); border-bottom: 1.5px solid var(--gray-200); }
+
+  .acc-icon {
+    width: 40px; height: 40px; min-width: 40px;
+    background: var(--blue);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    transition: background 0.2s;
+  }
+  .acc-block.open .acc-icon { background: var(--navy); }
+
+  .acc-titles { flex: 1; }
+  .acc-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 2px; }
+  .acc-title { font-size: 16px; font-weight: 700; color: var(--navy); }
+
+  .acc-arrow {
+    width: 28px; height: 28px; min-width: 28px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: var(--gray-600);
+    transition: transform 0.3s, background 0.2s;
+  }
+  .acc-block.open .acc-arrow { transform: rotate(180deg); background: var(--blue-light); color: var(--blue); }
+
+  .acc-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1);
+  }
+  .acc-block.open .acc-body { max-height: 9999px; }
+  .acc-body-inner { padding: 24px 22px 26px; }
+
+  /* override old section styles inside accordion */
+  .acc-body-inner section { padding: 0; background: transparent; }
+
 </style>
 </head>
 <body style="overflow:hidden;">
@@ -381,10 +446,20 @@
   <p>Всё, что нужно знать с первого дня: как заполнять таблицу, что считать браком и как его исправлять.</p>
 </div>
 
-<!-- STEP 1: КАК РАБОТАТЬ С ПАСПОРТОМ -->
-<section>
-  <div class="container">
-    <div class="section-label"><span class="num">1</span>Паспорт товара (Packaging List)</div>
+<div class="main-content">
+
+  <div class="acc-block open" id="acc1">
+    <div class="acc-header" onclick="toggleAcc('acc1')">
+      <div class="acc-icon">1</div>
+      <div class="acc-titles">
+        <div class="acc-label">Паспорт товара</div>
+        <div class="acc-title">Как читать Packaging List и что выписывать</div>
+      </div>
+      <div class="acc-arrow">▼</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="section-label"><span class="num">1</span>Паспорт товара (Packaging List)</div>
     <h2>Как читать паспорт и что выписывать</h2>
 
     <div class="alert important">
@@ -429,13 +504,22 @@
         </div>
       </div>
     </div>
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- PASSPORT EXAMPLE -->
-<section>
-  <div class="container">
-    <div class="section-label">📄 Пример паспорта</div>
+  <div class="acc-block" id="acc2">
+    <div class="acc-header" onclick="toggleAcc('acc2')">
+      <div class="acc-icon">📄</div>
+      <div class="acc-titles">
+        <div class="acc-label">Пример паспорта</div>
+        <div class="acc-title">Как выглядит реальный документ</div>
+      </div>
+      <div class="acc-arrow">▼</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="section-label">📄 Пример паспорта</div>
     <h2>Как выглядит Packaging List — пример</h2>
     <p style="font-size:14px;color:var(--gray-600);margin-bottom:20px;">Ниже — точная копия реального паспорта. Стрелки показывают что и откуда брать.</p>
 
@@ -514,13 +598,22 @@
         COVER ASSEMBLY — это накидка, её не проверяем и не вносим
       </div>
     </div>
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- STEP 2: ТАБЛИЦА -->
-<section>
-  <div class="container">
-    <div class="section-label"><span class="num">2</span>Таблица проверки</div>
+  <div class="acc-block" id="acc3">
+    <div class="acc-header" onclick="toggleAcc('acc3')">
+      <div class="acc-icon">2</div>
+      <div class="acc-titles">
+        <div class="acc-label">Таблица проверки</div>
+        <div class="acc-title">Формат таблицы и что куда писать</div>
+      </div>
+      <div class="acc-arrow">▼</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="section-label"><span class="num">2</span>Таблица проверки</div>
     <h2>Формат таблицы и что куда писать</h2>
 
     <div class="table-wrap">
@@ -568,13 +661,22 @@
       <span class="icon">⚠️</span>
       <div><strong>Не путайте коды товаров!</strong> У каждого изделия Part code может отличаться. Записывайте в одну строку только те товары, у которых одинаковый Part code. Если Part code разный — это разные позиции, каждая идёт отдельной строкой в таблице.</div>
     </div>
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- STEP 3: % БРАКА -->
-<section>
-  <div class="container">
-    <div class="section-label"><span class="num">3</span>Расчёт</div>
+  <div class="acc-block" id="acc4">
+    <div class="acc-header" onclick="toggleAcc('acc4')">
+      <div class="acc-icon">3</div>
+      <div class="acc-titles">
+        <div class="acc-label">Расчёт % брака</div>
+        <div class="acc-title">Формула, примеры и калькулятор</div>
+      </div>
+      <div class="acc-arrow">▼</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="section-label"><span class="num">3</span>Расчёт</div>
     <h2>Как считать процент брака</h2>
 
     <div class="formula-box">
@@ -644,11 +746,22 @@
         Введи числа выше — здесь появится результат
       </div>
     </div>
+      </div>
+    </div>
   </div>
-</section>
-<section>
-  <div class="container">
-    <div class="section-label"><span class="num">4</span>Дефекты</div>
+
+  <div class="acc-block" id="acc5">
+    <div class="acc-header" onclick="toggleAcc('acc5')">
+      <div class="acc-icon">4</div>
+      <div class="acc-titles">
+        <div class="acc-label">Дефекты</div>
+        <div class="acc-title">Правила исправления дефектов</div>
+      </div>
+      <div class="acc-arrow">▼</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="section-label"><span class="num">4</span>Дефекты</div>
     <h2>Правила исправления дефектов</h2>
 
     <div class="defects-grid">
@@ -726,13 +839,22 @@
       </div>
 
     </div>
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- FAQ -->
-<section>
-  <div class="container">
-    <div class="section-label">❓ FAQ</div>
+  <div class="acc-block" id="acc6">
+    <div class="acc-header" onclick="toggleAcc('acc6')">
+      <div class="acc-icon">❓</div>
+      <div class="acc-titles">
+        <div class="acc-label">Частые вопросы</div>
+        <div class="acc-title">FAQ — ответы на популярные вопросы</div>
+      </div>
+      <div class="acc-arrow">▼</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="section-label">❓ FAQ</div>
     <h2>Частые вопросы</h2>
 
     <div class="faq">
@@ -788,8 +910,12 @@
       </div>
 
     </div>
+      </div>
+    </div>
   </div>
-</section>
+
+</div>
+
 
 <!-- FOOTER -->
 <footer>
@@ -803,6 +929,13 @@
 </footer>
 
 <script>
+
+  function toggleAcc(id) {
+    const block = document.getElementById(id);
+    const isOpen = block.classList.contains('open');
+    block.classList.toggle('open', !isOpen);
+  }
+
   function calcDefect() {
     const total = parseFloat(document.getElementById('calc-total').value);
     const good  = parseFloat(document.getElementById('calc-good').value);
