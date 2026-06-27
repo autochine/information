@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обучение: Проверка товара на брак</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1a2744;
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --orange: #d97706;
+    --orange-light: #fef3c7;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #243260 100%);
+    color: white;
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(37,99,235,0.3) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .hero h1 span { color: #60a5fa; }
+  .hero p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.72);
+    max-width: 560px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+  /* SECTIONS */
+  section { padding: 48px 24px; }
+  section:nth-child(even) { background: white; }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .section-label .num {
+    width: 22px; height: 22px;
+    background: var(--blue);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+  }
+  h2 {
+    font-size: clamp(20px, 3.5vw, 28px);
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 24px;
+  }
+
+  /* STEP CARDS */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+  .step-card {
+    background: white;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 14px;
+    padding: 20px 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: box-shadow 0.2s;
+  }
+  .step-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .step-num {
+    width: 36px; height: 36px; min-width: 36px;
+    background: var(--blue);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+  }
+  .step-card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .step-card p { font-size: 14px; color: var(--gray-600); }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1.5px solid var(--gray-200); }
+  table { width: 100%; border-collapse: collapse; background: white; }
+  th {
+    background: var(--navy);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  td {
+    padding: 11px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-800);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--gray-50); }
+
+  /* FORMULA */
+  .formula-box {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    border-radius: 14px;
+    padding: 24px 28px;
+    color: white;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .formula-box .formula-text {
+    font-size: clamp(18px, 4vw, 26px);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+  .formula-box small { font-size: 13px; opacity: 0.8; }
+
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .example-pill {
+    background: white;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .example-pill strong { display: block; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+  .example-pill.ok { border-color: var(--green); background: var(--green-light); }
+  .example-pill.warn { border-color: var(--orange); background: var(--orange-light); }
+  .example-pill.bad { border-color: var(--red); background: var(--red-light); }
+
+  /* DEFECTS GRID */
+  .defects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .defect-card {
+    border-radius: 14px;
+    border: 1.5px solid var(--gray-200);
+    padding: 18px;
+    background: white;
+  }
+  .defect-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--navy); }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .badge.fix { background: var(--green-light); color: var(--green); }
+  .badge.remove { background: var(--red-light); color: var(--red); }
+  .defect-steps { list-style: none; }
+  .defect-steps li {
+    font-size: 13px;
+    color: var(--gray-600);
+    padding: 3px 0;
+    display: flex;
+    gap: 8px;
+  }
+  .defect-steps li::before {
+    content: attr(data-n);
+    min-width: 20px; height: 20px;
+    background: var(--gray-200);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-800);
+    flex-shrink: 0;
+  }
+  .defect-note {
+    font-size: 12.5px;
+    color: var(--gray-600);
+    background: var(--gray-50);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 8px;
+    border-left: 3px solid var(--orange);
+  }
+
+  /* ALERT BOX */
+  .alert {
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .alert.important { background: #fff7ed; border: 1.5px solid #fdba74; }
+  .alert .icon { font-size: 20px; flex-shrink: 0; }
+
+  /* FAQ */
+  .faq { display: flex; flex-direction: column; gap: 10px; }
+  .faq-item {
+    border: 1.5px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+  }
+  .faq-q {
+    padding: 16px 18px;
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--navy);
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .faq-q:hover { background: var(--gray-50); }
+  .faq-q::after { content: '﹢'; font-size: 18px; color: var(--blue); font-weight: 400; }
+  .faq-item.open .faq-q::after { content: '－'; }
+  .faq-a {
+    display: none;
+    padding: 0 18px 16px;
+    font-size: 13.5px;
+    color: var(--gray-600);
+    border-top: 1px solid var(--gray-100);
+  }
+  .faq-item.open .faq-a { display: block; padding-top: 14px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    color: white;
+    text-align: center;
+    padding: 36px 24px;
+  }
+  footer .contact-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  footer a { color: #60a5fa; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer .copy { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 14px; }
+
+  @media (max-width: 600px) {
+    .defects-grid { grid-template-columns: 1fr; }
+    .examples-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📋 Обучение новых сотрудников</div>
+  <h1>Проверка <span>автомобильных сидушек</span> на брак</h1>
+  <p>Всё, что нужно знать с первого дня: как заполнять таблицу, что считать браком и как его исправлять.</p>
+</div>
+
+<!-- STEP 1: КАК РАБОТАТЬ С ПАСПОРТОМ -->
+<section>
+  <div class="container">
+    <div class="section-label"><span class="num">1</span>Паспорт товара (Packaging List)</div>
+    <h2>Как читать паспорт и что выписывать</h2>
+
+    <div class="alert important">
+      <span class="icon">⚠️</span>
+      <div>Проверяем и вносим в таблицу <strong>ТОЛЬКО пену</strong> (сиденья или спинки). Чехлы (накидки, COVER ASSEMBLY) — не проверяем и в таблицу не вносим.</div>
+    </div>
+
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Берём паспорт товара (Packaging List)</h3>
+          <p>Ищем строки с пеной сиденья или спинки. Ориентир — слова «FOAM» (английский) или «泡沫» (китайский), либо «软海绵» (мягкий поролон).</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Выписываем код товара</h3>
+          <p>Это комбинация букв и цифр в столбце «Part code». Пример: <strong>402048850AA</strong>. Именно его вносим в таблицу — строго как в паспорте.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Выписываем название материала</h3>
+          <p>Берём из столбца «Название материала» — можно на китайском или на английском, как в паспорте. Пример: <em>后坐垫发泡装配总成（软海绵）</em> или <em>REAR SEAT CUSHION FOAM ASSEMBLY (SOFT SPONGE)</em>.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Записываем количество в коробке</h3>
+          <p>Смотрим столбец «Количество» (NO.) — это сколько штук данного товара было в коробке за день. Пример: 15 штук. Это число вносим в колонку «Всего».</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <div>
+          <h3>Если в таре два вида пены (левая + правая)</h3>
+          <p>Проверяем оба изделия и вносим <strong>два отдельных кода</strong> в таблицу. Чехлы всё равно не учитываем. Каждый вид пены — отдельная строка.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2: ТАБЛИЦА -->
+<section>
+  <div class="container">
+    <div class="section-label"><span class="num">2</span>Таблица проверки</div>
+    <h2>Формат таблицы и что куда писать</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Код товара</th>
+            <th>Название материала</th>
+            <th>Всего</th>
+            <th>Хороших</th>
+            <th>Исправлено (брак)</th>
+            <th>% брака</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Из паспорта (Part code)</td>
+            <td>Из паспорта (CN или EN)</td>
+            <td>Всего штук в коробке</td>
+            <td>Штук без дефектов</td>
+            <td>Штук с дефектом</td>
+            <td>Расчёт ниже</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">402048850AA</td>
+            <td>后坐垫发泡装配总成（软海绵）</td>
+            <td style="text-align:center">15</td>
+            <td style="text-align:center">15</td>
+            <td style="text-align:center">0</td>
+            <td style="color:var(--green);font-weight:700;text-align:center">0%</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">402048824AA</td>
+            <td>左后靠背发泡装配总成（带扶手+帮软海绵）</td>
+            <td style="text-align:center">16</td>
+            <td style="text-align:center">14</td>
+            <td style="text-align:center">2</td>
+            <td style="color:var(--orange);font-weight:700;text-align:center">12,5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3: % БРАКА -->
+<section>
+  <div class="container">
+    <div class="section-label"><span class="num">3</span>Расчёт</div>
+    <h2>Как считать процент брака</h2>
+
+    <div class="formula-box">
+      <div class="formula-text">% брака = (Исправлено ÷ Всего) × 100%</div>
+      <small>Делим количество бракованных на общее количество и умножаем на 100</small>
+    </div>
+
+    <div class="examples-grid">
+      <div class="example-pill ok">
+        <strong>15 : 15 : 0 → 0%</strong>
+        Весь товар хороший
+      </div>
+      <div class="example-pill warn">
+        <strong>15 : 10 : 5 → 33,3%</strong>
+        Брак 33,33%
+      </div>
+      <div class="example-pill bad">
+        <strong>15 : 5 : 10 → 66,7%</strong>
+        Брак 66,67%
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4: ДЕФЕКТЫ -->
+<section>
+  <div class="container">
+    <div class="section-label"><span class="num">4</span>Дефекты</div>
+    <h2>Правила исправления дефектов</h2>
+
+    <div class="defects-grid">
+
+      <div class="defect-card">
+        <h3>1. Отклеился паралон</h3>
+        <span class="badge fix">✔ Исправляем</span>
+        <ul class="defect-steps">
+          <li data-n="1">Достаём из коробки</li>
+          <li data-n="2">Наносим клей</li>
+          <li data-n="3">Прижимаем и даём высохнуть</li>
+        </ul>
+        <div class="defect-note">Если почти весь товар в коробке с таким дефектом — закрываем коробку, пишем «Брак» и дату, откладываем отдельно. При свободном времени перебираем и исправляем.</div>
+      </div>
+
+      <div class="defect-card">
+        <h3>2. Сильное загрязнение (краска, пятна)</h3>
+        <span class="badge remove">✖ Не исправляем — убираем</span>
+        <div class="defect-note">Если в таре было 15 сидушек, и одна с таким дефектом — в записи учитываем только 14 штук из 15. Учитываем в записи как брак.</div>
+      </div>
+
+      <div class="defect-card">
+        <h3>3. Порванный паралон / отклеившийся участок</h3>
+        <span class="badge fix">✔ Исправляем</span>
+        <ul class="defect-steps">
+          <li data-n="1">Подрезаем по форме</li>
+          <li data-n="2">Наносим клей</li>
+          <li data-n="3">Прижимаем</li>
+          <li data-n="4">Даём высохнуть</li>
+        </ul>
+      </div>
+
+      <div class="defect-card">
+        <h3>4. Вмятина</h3>
+        <span class="badge remove">✖ Не исправляем — убираем</span>
+        <div class="defect-note">Если в таре было 15 сидушек и есть вмятина — в записи учитываем только 14 из 15. Учитываем в записи как брак.</div>
+      </div>
+
+      <div class="defect-card">
+        <h3>5. Небольшая дырочка</h3>
+        <span class="badge fix">✔ Исправляем</span>
+        <ul class="defect-steps">
+          <li data-n="1">Наносим клей</li>
+          <li data-n="2">Заклеиваем по форме</li>
+          <li data-n="3">Прижимаем и даём высохнуть</li>
+        </ul>
+      </div>
+
+      <div class="defect-card">
+        <h3>6. Брак, не подлежащий восстановлению</h3>
+        <span class="badge remove">✖ Не восстанавливаем</span>
+        <div class="defect-note">Сортируем, откладываем в пустые коробки. На коробке пишем: «НЕ ПОДЛЕЖИТ ВОССТАНОВЛЕНИЮ» и сегодняшнее число.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container">
+    <div class="section-label">❓ FAQ</div>
+    <h2>Частые вопросы</h2>
+
+    <div class="faq">
+
+      <div class="faq-item">
+        <div class="faq-q">Нужно ли вносить чехлы (накидки) в таблицу?</div>
+        <div class="faq-a">Нет. Чехлы (COVER ASSEMBLY, накидки) — не проверяются и в таблицу не вносятся. Смотрим только пену сиденья и спинки.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Откуда брать название материала — с китайского или английского?</div>
+        <div class="faq-a">Можно с любого — как указано в паспорте (Packaging List). Главное — выписать точно, как написано, без изменений.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">В коробке оказалось два вида пены. Как заполнять таблицу?</div>
+        <div class="faq-a">Каждый вид пены — отдельная строка. Например, левая спинка — одна строка с кодом, правая спинка — другая строка с другим кодом.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Как посчитать % брака?</div>
+        <div class="faq-a">Формула: (количество бракованных ÷ всего штук) × 100%. Например: 2 брака из 16 штук = (2 ÷ 16) × 100 = 12,5%.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Что делать, если почти вся коробка с дефектом (отклеился паралон)?</div>
+        <div class="faq-a">Закрыть коробку, написать на крышке «Брак» и сегодняшнюю дату, отложить отдельно. Когда будет свободное время — перебрать, проклеить и исправить.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Загрязнённую сидушку (краска, пятна) можно отмыть и вернуть?</div>
+        <div class="faq-a">Нет. Сильное загрязнение не исправляется — товар убирается. В записи вместо 15 штук учитываем 14 (или меньше, в зависимости от количества таких дефектов).</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Что писать на коробке с неисправимым браком?</div>
+        <div class="faq-a">«НЕ ПОДЛЕЖИТ ВОССТАНОВЛЕНИЮ» и сегодняшнее число. Коробку отложить отдельно.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Где взять код товара?</div>
+        <div class="faq-a">В паспорте товара (Packaging List), в столбце «Part code» / «物料编码». Это обычно комбинация букв и цифр, например: 402048850AA.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-size:13px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Есть вопросы?</div>
+  <div style="font-size:18px;font-weight:700;margin-bottom:4px">Напишите руководителю</div>
+  <div class="contact-box">
+    <span>💬</span>
+    <span>ВКонтакте: <a href="https://vk.com/adi00909" target="_blank">@adi00909</a></span>
+  </div>
+  <div class="copy">© 2025 Все права защищены. Внутренний обучающий материал. Распространение за пределами компании запрещено.</div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
